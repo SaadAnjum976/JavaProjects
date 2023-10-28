@@ -9,44 +9,135 @@ import java.text.SimpleDateFormat;
 
 public class BodyBuilding {
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+	 public static void main(String[] args) {
+		 Scanner scanner = new Scanner(System.in);
 
-        // Get user information
-        System.out.print("Enter your height (in meters): ");
-        double height = scanner.nextDouble();
+		 System.out.println("Welcome to the Fitness Tracker!");
 
-        System.out.print("Enter your age: ");
-        int age = scanner.nextInt();
+		 double height = 0;
+		 String heightUnit;
+		 int feet = 0;
+		 int inches = 0;
 
-        System.out.print("Enter your weight (in kg): ");
-        double weight = scanner.nextDouble();
+		 boolean validHeightInput = false;
+		 while (!validHeightInput) {
+		     System.out.print("Enter your height (m/ft): ");
+		     heightUnit = scanner.nextLine().toLowerCase();
 
-        System.out.print("Enter your gender (M/F): ");
-        String gender = scanner.next();
+		     if (heightUnit.equals("m")) {
+		         System.out.print("Enter your height in meters: ");
+		         height = scanner.nextDouble();
+		         validHeightInput = true;
+		     } else if (heightUnit.equals("ft")) {
+		         System.out.print("Enter your height in feet: ");
+		         feet = scanner.nextInt();
+		         System.out.print("Enter your height in inches: ");
+		         inches = scanner.nextInt();
+		         // Convert feet and inches to meters and assign it to height
+		         height = (feet * 0.3048) + (inches * 0.0254);
+		         validHeightInput = true;
+		     } else {
+		         System.out.println("Invalid input. Please enter 'm' for meters or 'ft' for feet and inches.");
+		         scanner.nextLine(); // Consume the invalid input
+		     }
+		 }
 
-        System.out.print("Enter your goal (mass/shred/strength): ");
-        String goal = scanner.next();
+		 scanner.nextLine(); // Consume the newline character
 
-        // Calculate BMI
-        double bmi = calculateBMI(height, weight);
+		 String weightUnit;
+		 double weight = 0;
 
-        // Calculate caloric intake
-        int caloricIntake = calculateCaloricIntake(weight, height, age, gender, goal);
+		 boolean validWeightInput = false;
+		 while (!validWeightInput) {
+		     System.out.print("Enter your weight (kg/lbs): ");
+		     weightUnit = scanner.nextLine().toLowerCase();
 
-        // Provide exercise suggestions
-        String exerciseSuggestions = getExerciseSuggestions(goal);
+		     if (weightUnit.equals("kg")) {
+		         System.out.print("Enter your weight in kilograms: ");
+		         weight = scanner.nextDouble();
+		         validWeightInput = true;
+		     } else if (weightUnit.equals("lbs")) {
+		         System.out.print("Enter your weight in pounds: ");
+		         weight = scanner.nextDouble();
+		         validWeightInput = true;
+		     } else {
+		         System.out.println("Invalid input. Please enter 'kg' or 'lbs'.");
+		         scanner.nextLine(); // Consume the invalid input
+		     }
+		 }
 
-        // Display results
-        System.out.println("\nResults:");
-        System.out.println("BMI: " + bmi);
-        System.out.println("Caloric Intake: " + caloricIntake + " calories/day");
-        System.out.println("Exercise Suggestions: " + exerciseSuggestions);
+		 int age = 0;
+		 boolean validAgeInput = false;
+		 while (!validAgeInput) {
+		     System.out.print("Enter your age: ");
+		     if (scanner.hasNextInt()) {
+		         age = scanner.nextInt();
+		         validAgeInput = true;
+		     } else {
+		         System.out.println("Invalid input. Please enter a valid integer.");
+		         scanner.nextLine(); // Consume the invalid input
+		     }
+		 }
 
-        // Save data and encourage return
-        saveUserData(height, age, weight, gender, goal);
-        encourageReturn();
-    }
+		 String gender = "";
+		 boolean validGenderInput = false;
+		 while (!validGenderInput) {
+		     System.out.print("Enter your gender (M/F/Male/Female): ");
+		     gender = scanner.next().toLowerCase();
+
+		     if (gender.equals("m") || gender.equals("male")) {
+		         gender = "Male";
+		         validGenderInput = true;
+		     } else if (gender.equals("f") || gender.equals("female")) {
+		         gender = "Female";
+		         validGenderInput = true;
+		     } else {
+		         System.out.println("Invalid input. Please enter 'M', 'F', 'Male', or 'Female'.");
+		         scanner.nextLine(); // Consume the invalid input
+		     }
+		 }
+
+		 String goal = "";
+		 boolean validGoalInput = false;
+		 while (!validGoalInput) {
+		     System.out.print("Enter your goal (mass/shred/strength): ");
+		     goal = scanner.next().toLowerCase();
+
+		     if (goal.equals("mass") || goal.equals("shred") || goal.equals("strength")) {
+		         validGoalInput = true;
+		     } else {
+		         System.out.println("Invalid input. Please enter 'mass', 'shred', or 'strength'.");
+		         scanner.nextLine(); // Consume the invalid input
+		     }
+		 }
+
+
+	        int day = 1; // Assume this is the first day
+
+	        // Calculate BMI
+	        double bmi = calculateBMI(weight, height);
+
+	        // Calculate caloric intake
+	        int caloricIntake = calculateCaloricIntake(weight, height, age, gender, goal);
+
+	        // Get exercise suggestions
+	        String exerciseSuggestions = getExerciseSuggestions(goal);
+
+	        // Save user data with metrics
+	        saveUserDataWithMetrics(day, height, age, weight, gender, goal, bmi, caloricIntake, exerciseSuggestions);
+
+	        // Give the results
+	        System.out.println("Day: " + day);
+	        System.out.println("BMI Reading: " + bmi);
+	        System.out.println("Caloric Intake You Must Consume For Your Goal: " + caloricIntake);
+	        System.out.println("Exercise Routine: " + day);
+	        
+	        // Successful saved message
+	        System.out.println("User data also saved for Day " + day + ".");
+
+	        // Encourage return after 30 days
+	        encourageReturn(day);
+	    }
 
     public static double calculateBMI(double height, double weight) {
         return weight / (height * height);
@@ -55,10 +146,10 @@ public class BodyBuilding {
     public static int calculateCaloricIntake(double weight, double height, int age, String gender, String goal) {
         double bmr;
 
-        if (gender.equalsIgnoreCase("M")) {
+        if (gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male")) {
             // For males
             bmr = 88.362 + (13.397 * weight) + (4.799 * height * 100) - (5.677 * age);
-        } else if (gender.equalsIgnoreCase("F")) {
+        } else if (gender.equalsIgnoreCase("F") || gender.equalsIgnoreCase("Female")) {
             // For females
             bmr = 447.593 + (9.247 * weight) + (3.098 * height * 100) - (4.330 * age);
         } else {
@@ -107,17 +198,15 @@ public class BodyBuilding {
     }
 
 
-    public static void saveUserData(double height, int age, double weight, String gender, String goal) {
+    public static void saveUserDataWithMetrics(int day, double height, int age, double weight, String gender, String goal, double bmi, int caloricIntake, String exerciseSuggestions) {
+        // Implement saving user data with metrics to a file or database
+        // (e.g., use file I/O or a database)
+
+        // Example: Writing to a file
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("userData.txt", true));
-            
-            // Write user data to the file
-            writer.write("Height: " + height + "cm\n");
-            writer.write("Age: " + age + " years\n");
-            writer.write("Weight: " + weight + "kg\n");
-            writer.write("Gender: " + gender + "\n");
-            writer.write("Goal: " + goal + "\n\n");
-            
+            FileWriter writer = new FileWriter("userData.txt", true);
+            writer.write("Day " + day + ": Height=" + height + ", Age=" + age + ", Weight=" + weight + ", Gender=" + gender
+                    + ", Goal=" + goal + ", BMI=" + bmi + ", Caloric Intake=" + caloricIntake + ", Exercise Suggestions=" + exerciseSuggestions + "\n");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -125,14 +214,12 @@ public class BodyBuilding {
     }
 
     @SuppressWarnings("deprecation")
-	public static void encourageReturn() {
+	public static void encourageReturn(int day) {
         Date currentDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
-        // Add a specified number of days to encourage return
-        int returnDays = 30; // Modify as needed
-        currentDate.setDate(currentDate.getDate() + returnDays);
+        currentDate.setMonth(currentDate.getMonth() + (day - 1));
 
-        System.out.println("\nRemember to come back and track your progress on " + dateFormat.format(currentDate));
+        System.out.println("\nRemember to come back and track your progress on Day " + (day) + " (" + dateFormat.format(currentDate) + ")");
     }
 }

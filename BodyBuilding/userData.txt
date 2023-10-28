@@ -1,6 +1,1 @@
-Height: 6.0cm
-Age: 28 years
-Weight: 160.0kg
-Gender: M
-Goal: Mass
-
+Day 1: Height=1.7272, Age=31, Weight=130.0, Gender=Male, Goal=mass, BMI=1.0220118343195267E-4, Caloric Intake=2979, Exercise Suggestions=For mass gain, focus on compound exercises like squats, deadlifts, and bench presses. Aim for 3-5 sets of 6-10 reps.
