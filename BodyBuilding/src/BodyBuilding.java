@@ -130,7 +130,7 @@ public class BodyBuilding {
 	        System.out.println("Day: " + day);
 	        System.out.println("BMI Reading: " + bmi);
 	        System.out.println("Caloric Intake You Must Consume For Your Goal: " + caloricIntake);
-	        System.out.println("Exercise Routine: " + day);
+	        System.out.println("Exercise Routine: " + exerciseSuggestions);
 	        
 	        // Successful saved message
 	        System.out.println("User data also saved for Day " + day + ".");
