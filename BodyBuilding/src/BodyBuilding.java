@@ -12,7 +12,7 @@ public class BodyBuilding {
 	 public static void main(String[] args) {
 		 Scanner scanner = new Scanner(System.in);
 
-		 System.out.println("Welcome to the Saad's Fitness Tracker!");
+		 System.out.println("Welcome to the Fitness Tracker!");
 
 		 double height = 0;
 		 boolean validHeightInput = false;
