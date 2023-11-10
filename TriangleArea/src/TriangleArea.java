@@ -16,11 +16,11 @@ public class TriangleArea {
 	         int c= sc.nextInt();
 	    
 	         if((a+b)>c && (a+c)>b && (b+c)>a)
-	          {
+	         {
 	            double s=(a+b+c)/2.0;
 	            double area=Math.sqrt(s*(s-a)*(s-b)*(s-c));
 	            System.out.println("Area of Triangle is: " + area);    
-	          }
+	         }
 	         else  
 	           System.out.println("Area of the triangle does not exist");
 	    
